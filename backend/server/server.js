@@ -26,12 +26,9 @@ class Server {
   }
 
   addMiddlewares() {
-    //CORS
     this.app.use(cors());
-
     this.app.use(express.json());
-
-    this.app.use(express.static("public"));
+    this.app.use(express.urlencoded({ extended: true }));
   }
 
   setRoutes() {
@@ -45,6 +42,8 @@ class Server {
     this.app.listen(this.port, () => {
       //callback
       console.log("Servidor corriendo en puerto:", process.env.PORT);
+      console.log("Ejecutando", process.env.VERSION);
+
     });
   }
 }

@@ -4,14 +4,14 @@ const usuarioSchema = Schema(
   {
     identificacion: {
       type: String,
-      required: true,
       unique: true,
+      required: true,
     },
 
     username: {
       type: String,
-      required: true,
       unique: true,
+      required: true,
     },
 
     correo: {
