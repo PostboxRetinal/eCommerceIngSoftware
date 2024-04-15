@@ -127,4 +127,4 @@ const compraSchema = Schema({
   );
 
 
-module.exports = model("compra", compraSchema);
+module.exports = model("compra", compraSchema,"compras");

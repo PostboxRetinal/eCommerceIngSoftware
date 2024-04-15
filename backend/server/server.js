@@ -13,7 +13,7 @@ class Server {
       auth: "/api/auth",
       catalogo: "/api/catalogo",
       articulos: "/api/articulos",
-      compra:"api/compras"
+      compra:"/api/compra"
     };
 
     this.connectToDB();
@@ -38,7 +38,17 @@ class Server {
     this.app.use(this.paths.catalogo, require("../routes/catalogo.js"));
     this.app.use(this.paths.articulos, require("../routes/articulos.js"));
     this.app.use(this.paths.compra, require("../routes/compra.js"));
+    
+    
+    
+    this.app.use((req, res, next) => {
+      res.status(404).json({
+        mensaje: 'La ruta solicitada no existe.'
+      });
+    });
+    
   }
+  
 
   listen() {
     this.app.listen(this.port, () => {
@@ -49,5 +59,6 @@ class Server {
     });
   }
 }
+
 
 module.exports = Server;

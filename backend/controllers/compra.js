@@ -1,195 +1,81 @@
-const Compra = require("../models/compra.js")
-const articulo = require("../models/articulo.js")
+const compra = require("../models/compra.js")
+const {asyncHandler} = require("../middlewares/asyncHandler.js");
+const usuario = require("../models/usuario.js");
 
-// Utility Function
-function calcPrecios(compraItems) {
-  const articulosPrecio = compraItems.reduce(
-    (acc, item) => acc + item.precio * item.cantidad, 0
-    ) 
-    return { calcPrecios, articulosPrecio};
-  }
-
-const createCompra = async (req, res) => {
-  try {
-    const { compraItems, direccionDomicilio, metodoPago } = req.body;
-
-    if (compraItems && compraItems.length === 0) {
-      res.status(400);
-      throw new Error("No hay items en la compra");
-    }
-
-    const itemsFromDB = await articulo.find({
-      _id: { $in: compraItems.map((x) => x._id) },
-    });
-
-    const dbCompraItems = compraItems.map((itemFromClient) => {
-      const matchingCompraFromDB = itemsFromDB.find(
-        (itemsFromDB) => itemsFromDB._id.toString() === itemFromClient._id
-      );
-
-      if (!matchingCompraFromDB) {
-        res.status(404);
-        throw new Error(`Producto no encontrado: ${itemFromClient._id}`);
-      }
-
-      return {
-        ...itemFromClient,
-        articulo: itemFromClient._id,
-        precio: matchingCompraFromDB.precio,
-        _id: undefined,
-      };
-    });
-
-    const { precioArticulos, precioTotal } =
-      calcPrecios(dbCompraItems);
-
-    const compra = new Compra({
-      compraItems: dbCompraItems,
-      usuario: req.user._id,
-      direccionDomicilio,
-      metodoPago,
-      precioArticulos,
-      precioTotal,
-    });
-
-    const createCompra = await compras.save();
-    res.status(201).json(createCompra);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const getAllCompras = async (req, res) => {
-  try {
-    const compras = await compras.find({}).populate("user", "id username");
+const obtenerCompras = asyncHandler(async (req, res) => {
+  const Compra = await compras.find({}).populate('usuario').populate('compraItems.articulo');
+  if (compras.length === 0) {
+    // No hay documentos, enviar una respuesta indicándolo
+    res.status(404).json({ mensaje: 'No se encontraron compras.' });
+  } else {
+    // Envía los datos de las compras como respuesta JSON
     res.json(compras);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-};
+});
 
-const getUserCompras = async (req, res) => {
+const agregarCompra = asyncHandler(async (req, res) => {
   try {
-    const compras = await compras.find({ usuario: req.usuario._id });
-    res.json(compras);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const countTotalCompras = async (req, res) => {
-  try {
-    const totalCompras = await compras.countDocuments();
-    res.json({ totalCompras });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const calculateTotalVentas = async (req, res) => {
-  try {
-    const compras = await compras.find();
-    const totalVentas = compras.reduce((sum, compra) => sum + compra.totalPrice, 0);
-    res.json({ totalVentas });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const calcualteTotalVentasByDate = async (req, res) => {
-  try {
-    const ventasByFecha = await compras.aggregate([
-      {
-        $match: {
-          isPago: true,
-        },
-      },
-      {
-        $group: {
-          _id: {
-            $dateToString: { format: "%Y-%m-%d", date: "$paidAt" },
-          },
-          totalVentas: { $sum: "$precioTotal" },
-        },
-      },
-    ]);
-
-    res.json(ventasByFecha);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const findCompraById = async (req, res) => {
-  try {
-    const compra = await compras.findById(req.params.id).populate(
-      "usuario",
-      "correo"
-    );
-
-    if (compras) {
-      res.json(compra);
-    } else {
-      res.status(404);
-      throw new Error("Compra no encontrada");
+    // Verificar si el ID del usuario existe
+    const usuarioExiste = await usuario.findById(req.body.usuario);
+    if (!usuarioExiste) {
+      return res.status(404).json({ mensaje: 'El ID del usuario no existe.' });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
-const markCompraAsPaid = async (req, res) => {
+    // Crear una nueva compra con los datos enviados en el cuerpo de la solicitud (req.body)
+    const nuevaCompra = new compra(req.body);
+
+    // Validar y guardar la nueva compra en la base de datos
+    await nuevaCompra.validate();
+    await nuevaCompra.save();
+
+    // Enviar una respuesta indicando que la compra fue creada exitosamente
+    res.status(201).json({
+      mensaje: 'Compra agregada exitosamente',
+      newCompra: nuevaCompra
+    });
+  } catch (error) {
+    // Si hay un error de validación o de otro tipo, enviar un mensaje de error
+    res.status(400).json({ mensaje: 'Error al agregar la compra', detalles: error.message });
+  }
+});
+
+const eliminarCompra = asyncHandler(async (req, res) => {
   try {
-    const compra = await compras.findById(req.params.id);
+    const compraId = req.params.id; // El ID se pasa como parámetro de URL
+    const Compra = await compra.findByIdAndDelete(compraId);
 
-    if (compra) {
-      compra.isPago = true;
-      compra.paidAt = Date.now();
-      compra.resultadoPago = {
-        id: req.body.id,
-        estado: req.body.estado,
-        update_time: req.body.update_time,
-        correo: req.body.payer.correo,
-      };
-
-      const updateCompra = await compras.save();
-      res.status(200).json(updateCompra);
-    } else {
-      res.status(404);
-      throw new Error("Order not found");
+    if (!Compra) {
+      return res.status(404).json({ mensaje: 'Compra no encontrada.' });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
-const markCompraAsDelivered = async (req, res) => {
+    res.json({ mensaje: 'Compra eliminada exitosamente.' });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al eliminar la compra', error: error.message });
+  }
+});
+
+const actualizarCompra = asyncHandler(async (req, res) => {
   try {
-    const compra = await compras.findById(req.params.id);
+    const compraId = req.params.id; // El ID se pasa como parámetro de URL
+    const compraActualizada = await compra.findByIdAndUpdate(compraId, req.body, { new: true, runValidators: true });
 
-    if (compra) {
-      compra.isDelivered = true;
-      compra.deliveredAt = Date.now();
-
-      const updatedCompra = await compras.save();
-      res.json(updatedCompra);
-    } else {
-      res.status(404);
-      throw new Error("Order not found");
+    if (!compraActualizada) {
+      return res.status(404).json({ mensaje: 'Compra no encontrada.' });
     }
+
+    res.json({ mensaje: 'Compra actualizada exitosamente.', CompraUpd: compraActualizada });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ mensaje: 'Error al actualizar la compra', error: error.message });
   }
-};
+});
+
+
+
+
 
 module.exports = {
-  createCompra,
-  getAllCompras,
-  getUserCompras,
-  countTotalCompras,
-  calculateTotalVentas,
-  calcualteTotalVentasByDate,
-  findCompraById,
-  markCompraAsPaid,
-  markCompraAsDelivered,
+  obtenerCompras,
+  agregarCompra,
+  eliminarCompra,
+  actualizarCompra
 };
