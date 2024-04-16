@@ -3,13 +3,13 @@ const {asyncHandler} = require("../middlewares/asyncHandler.js");
 const usuario = require("../models/usuario.js");
 
 const obtenerCompras = asyncHandler(async (req, res) => {
-  const Compra = await compras.find({}).populate('usuario').populate('compraItems.articulo');
-  if (compras.length === 0) {
+  const Compra = await compra.find({}).populate('usuario').populate('compraItems.articulo');
+  if (compra.length === 0) {
     // No hay documentos, enviar una respuesta indicándolo
     res.status(404).json({ mensaje: 'No se encontraron compras.' });
   } else {
     // Envía los datos de las compras como respuesta JSON
-    res.json(compras);
+    res.json(Compra);
   }
 });
 
@@ -41,7 +41,7 @@ const agregarCompra = asyncHandler(async (req, res) => {
 
 const eliminarCompra = asyncHandler(async (req, res) => {
   try {
-    const compraId = req.params.id; // El ID se pasa como parámetro de URL
+    const compraId = req.params._id; // El ID se pasa como parámetro de URL
     const Compra = await compra.findByIdAndDelete(compraId);
 
     if (!Compra) {

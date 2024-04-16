@@ -40,4 +40,4 @@ const usuarioSchema = Schema(
   { timestamps: true }
 );
 
-module.exports = model("Usuario", usuarioSchema);
+module.exports = model("usuario", usuarioSchema);

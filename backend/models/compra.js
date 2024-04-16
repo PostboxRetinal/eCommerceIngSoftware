@@ -7,7 +7,7 @@ const compraSchema = Schema({
   usuario: { 
     type: mongoose.Schema.Types.ObjectId, 
     required: true, 
-    ref: "User" },
+    ref: "usuario" },
 
     compraItems: [ {
 
@@ -34,7 +34,7 @@ const compraSchema = Schema({
 
       articulo: {
         type: Schema.Types.ObjectId,
-        ref: "articulo",
+        ref: "Articulo",
         require: true,
       },
 }],
@@ -50,31 +50,23 @@ const compraSchema = Schema({
       },
 
       direccionDomicilio: {
-        type: "object",
-        properties: {
-
-          direccion: {
-            type: String,
-            require: true,
-          },
-
-          ciudad: {
-            type: String,
-            require: true,
-          },
-
-          barrio: {
-            type: String,
-          },
-
-          codigoPostal: {
-            type: Number,
-          },
-
-          observaciones: {
-            type: String,
-          },
+        direccion: {
+          type: String,
+          required: true,
         },
+        ciudad: {
+          type: String,
+          required: true,
+        },
+        barrio: {
+          type: String,
+        },
+        codigoPostal: {
+          type: Number,
+        },
+        observaciones: {
+          type: String,
+        }
       },
       
       metodoPago: {
