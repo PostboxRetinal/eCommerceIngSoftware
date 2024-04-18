@@ -41,8 +41,8 @@ const agregarCompra = asyncHandler(async (req, res) => {
 
 const eliminarCompra = asyncHandler(async (req, res) => {
   try {
-    const compraId = req.params._id; // El ID se pasa como parámetro de URL
-    const Compra = await compra.findByIdAndDelete(compraId);
+    const { consecutivo } = req.body; // El ID se pasa como parámetro de URL
+    const Compra = await compra.findOneAndDelete({'compraItems.consecutivo':consecutivo});
 
     if (!Compra) {
       return res.status(404).json({ mensaje: 'Compra no encontrada.' });
@@ -54,28 +54,47 @@ const eliminarCompra = asyncHandler(async (req, res) => {
   }
 });
 
-const actualizarCompra = asyncHandler(async (req, res) => {
+const actualizarCompra = async (req, res) => {
+  const compraId = req.body._id; // Asume que el ID de la compra viene en el cuerpo de la solicitud
+
   try {
-    const compraId = req.params.id; // El ID se pasa como parámetro de URL
-    const compraActualizada = await compra.findByIdAndUpdate(compraId, req.body, { new: true, runValidators: true });
+    const compraActualizada = await compra.findByIdAndUpdate(
+      compraId,
+      req.body,
+      { new: true, runValidators: true }
+    );
 
     if (!compraActualizada) {
       return res.status(404).json({ mensaje: 'Compra no encontrada.' });
     }
 
-    res.json({ mensaje: 'Compra actualizada exitosamente.', CompraUpd: compraActualizada });
+    res.json({ mensaje: 'Compra actualizada exitosamente.', compraActualizada });
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al actualizar la compra', error: error.message });
   }
-});
+};
 
+const buscarCompraPorConsecutivo = async (req, res) => {
+  const { consecutivo } = req.body; // Asume que el consecutivo viene en el cuerpo de la solicitud
 
+  try {
+    const Compra = await compra.findOne({ 'compraItems.consecutivo': consecutivo });
 
+    if (!Compra) {
+      return res.status(404).json({ mensaje: 'Compra no encontrada.' });
+    }
+
+    res.json(Compra);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al buscar la compra', error: error.message });
+  }
+};
 
 
 module.exports = {
   obtenerCompras,
   agregarCompra,
   eliminarCompra,
-  actualizarCompra
+  actualizarCompra,
+  buscarCompraPorConsecutivo
 };
