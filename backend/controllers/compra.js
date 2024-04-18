@@ -44,6 +44,7 @@ const eliminarCompra = asyncHandler(async (req, res) => {
     const { consecutivo } = req.body; // El ID se pasa como parámetro de URL
     const Compra = await compra.findOneAndDelete({'compraItems.consecutivo':consecutivo});
 
+
     if (!Compra) {
       return res.status(404).json({ mensaje: 'Compra no encontrada.' });
     }
@@ -89,6 +90,11 @@ const buscarCompraPorConsecutivo = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al buscar la compra', error: error.message });
   }
 };
+    res.json({ mensaje: 'Compra actualizada exitosamente.', CompraUpd: compraActualizada });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar la compra', error: error.message });
+  }
+});
 
 
 module.exports = {

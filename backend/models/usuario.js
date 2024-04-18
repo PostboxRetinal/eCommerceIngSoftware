@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const disenno = require("./disenno");
 
 const usuarioSchema = Schema(
   {
