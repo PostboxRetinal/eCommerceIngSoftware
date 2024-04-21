@@ -57,7 +57,7 @@ const loginUsuario = asyncHandler(async (req, res) => {
     if (!usuario) {
       return res.status(400).json({
         ok: false,
-        msg: "El correo" + correo + " no se ha encontrado en la base de datos",
+        msg: "El correo " + correo + " no se ha encontrado en la base de datos",
       });
     }
     //Validar si la contraseña es correcta
