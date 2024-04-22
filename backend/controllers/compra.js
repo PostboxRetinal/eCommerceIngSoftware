@@ -1,6 +1,7 @@
 const compra = require("../models/compra.js")
 const {asyncHandler} = require("../middlewares/asyncHandler.js");
 const usuario = require("../models/usuario.js");
+const Articulo = require ("../models/articulo.js")
 
 const obtenerCompras = asyncHandler(async (req, res) => {
   const Compra = await compra.find({}).populate('usuario').populate('compraItems.articulo');
@@ -21,8 +22,27 @@ const agregarCompra = asyncHandler(async (req, res) => {
       return res.status(404).json({ mensaje: 'El ID del usuario no existe.' });
     }
 
-    // Crear una nueva compra con los datos enviados en el cuerpo de la solicitud (req.body)
+    // Validar el stock de cada artículo en la compra
+    for (const item of req.body.compraItems) {
+      const articulo = await Articulo.findById(item.articulo);
+      if (!articulo) {
+        return res.status(404).json({ mensaje: `Artículo con ID ${item.articulo} no encontrado.` });
+      }
+      if (articulo.stock < item.cantidad) {
+        return res.status(400).json({ mensaje: `No hay suficiente stock para el artículo: ${articulo.nombre}.` });
+      }
+    }
+
+    // Si el stock es suficiente, crear una nueva compra
     const nuevaCompra = new compra(req.body);
+
+    // Restar el stock de los artículos comprados
+    for (const item of req.body.compraItems) {
+      await Articulo.updateOne(
+        { _id: item.articulo },
+        { $inc: { stock: -item.cantidad } }
+      );
+    }
 
     // Validar y guardar la nueva compra en la base de datos
     await nuevaCompra.validate();
@@ -38,6 +58,7 @@ const agregarCompra = asyncHandler(async (req, res) => {
     res.status(400).json({ mensaje: 'Error al agregar la compra', detalles: error.message });
   }
 });
+
 
 const eliminarCompra = asyncHandler(async (req, res) => {
   try {
