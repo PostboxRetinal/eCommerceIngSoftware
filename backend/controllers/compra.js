@@ -121,7 +121,7 @@ const actualizarCompra = async (req, res) => {
   }
 };
 
-const buscarCompraPorConsecutivo = async (req, res) => {
+const buscarCompraPorConsecutivo = asyncHandler(async (req, res) => {
   const { consecutivo } = req.body; // Asume que el consecutivo viene en el cuerpo de la solicitud
 
   try {
@@ -132,11 +132,11 @@ const buscarCompraPorConsecutivo = async (req, res) => {
     }
 
     res.json(Compra);
-  } catch (error) {
-    res.status(500).json({ mensaje: 'Error al buscar la compra', error: error.message });
-  }
-};
 
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al buscar/actualizar la compra', error: error.message });
+  }
+});
 
 module.exports = {
   obtenerCompras,
