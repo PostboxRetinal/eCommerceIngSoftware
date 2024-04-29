@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = require("mongoose");
+const articuloSchema = require("./articulo");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const compraSchema = Schema({
@@ -9,35 +10,7 @@ const compraSchema = Schema({
     required: true, 
     ref: "usuario" },
 
-    compraItems: [ {
-
-      consecutivo: {
-        type: Number,
-        require: true,
-        unique: true,
-      },
-
-      fecha: {
-        type: Date,
-        require: true,
-      },
-
-      cantidad: { 
-        type: Number,
-         required: true 
-        },
-
-      precio: { 
-        type: Number,
-         required: true 
-        },
-
-      articulo: {
-        type: Schema.Types.ObjectId,
-        ref: "Articulo",
-        require: true,
-      },
-}],
+    compraItems: [articuloSchema],
 
       cantidadProductos: { 
         type: Number,
@@ -81,12 +54,6 @@ const compraSchema = Schema({
         correo: { type: String },
       },
 
-      precioArticulos: {
-        type: Number,
-        required: true,
-        default: 0.0,
-      },
-
       precioTotal: {
         type: Number,
         required: true,
@@ -119,4 +86,4 @@ const compraSchema = Schema({
   );
 
 
-module.exports = model("compra", compraSchema,"compras");
+module.exports = model("compra", compraSchema, "compras");
