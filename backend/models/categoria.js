@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const categoriaSchema = Schema({
-  identificador: {
+  serial_1: {
     type: String,
     require: true,
     unique: true,

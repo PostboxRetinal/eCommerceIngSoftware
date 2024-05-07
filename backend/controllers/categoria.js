@@ -6,7 +6,7 @@ const crearCategoria = async (req, res) => {
     try {
 
         const {
-            nombre,} = req.body;
+            nombre, serial} = req.body;
            
         if(!nombre){
             return res.json({ error: "El nombre es obligatorio" });
@@ -20,7 +20,7 @@ const crearCategoria = async (req, res) => {
         }
 
 
-        const categoria = await new Categoria({ nombre}).save();
+        const categoria = await new Categoria(req.body).save();
         res.json(categoria);
         
     } catch (error) {

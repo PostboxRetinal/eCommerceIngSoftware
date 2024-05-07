@@ -20,12 +20,17 @@ const articuloSchema = Schema({
   categoria: {
     type: Schema.Types.ObjectId,
     ref: "categoria",
-    require: true,
+    require: false,
   },
 
   stock: {
     type: Number,
     require: true,
+    talla:{
+      type: String,
+      require: true,
+      ref : "talla"
+    }
   },
 
   comentario: {
@@ -34,9 +39,9 @@ const articuloSchema = Schema({
   },
 
   imagen: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: "imagen",
-    require: true,
+    require: false,
   },
   isPersonalizable: {
     type: Boolean,

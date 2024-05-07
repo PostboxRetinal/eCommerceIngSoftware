@@ -15,6 +15,15 @@ const añadirArticulo = async (req, res) => {
     if (!nombre) {
       return res.json({ error: "El nombre es obligatorio" });
     }
+    if (!precioUnitario) {
+      return res.json({ error: "El precio unitario es obligatorio" });
+    }
+    if (precioUnitario < 0) {
+      return res.json({ error: "El precio unitario no puede ser negativo" });
+    }
+    if (precioUnitario === 0) {
+      return res.json({ error: "El precio unitario no puede ser 0" });
+    }
     if (!serial) {
       return res.json({ error: "El serial es obligatorio" });
     }
@@ -27,6 +36,13 @@ const añadirArticulo = async (req, res) => {
     if (isPersonalizable === undefined) {
       return res.json({ error: "El campo personalizable es obligatorio" });
     }
+
+    const existeArticulo = await Articulo.findOne({ nombre });
+
+        if (existeArticulo) {
+
+            return res.json({ error: "El articulo ya existe" });
+        };
 
     let articulo = new Articulo(req.body);
     await articulo.save();
@@ -46,6 +62,7 @@ const actualizarArticulo = async (req, res) => {
       stock,
       comentario,
       isPersonalizable,
+      imagen
     } = req.body;
 
     // Validación
@@ -63,6 +80,9 @@ const actualizarArticulo = async (req, res) => {
     }
     if (isPersonalizable === undefined) {
       return res.json({ error: "El campo personalizable es obligatorio" });
+    }
+    if (!imagen) {
+      return res.json({ error: "La imagen es obligatoria" });
     }
 
     const articulo = await Articulo.findByIdAndUpdate(req.params.id, req.body, {
