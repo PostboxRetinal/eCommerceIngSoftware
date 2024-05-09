@@ -1,11 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const articuloSchema = Schema({
-  serial: {
-    type: String,
-    require: true,
-    unique: true,
-  },
+  
 
   nombre: {
     type: String,
@@ -20,18 +16,19 @@ const articuloSchema = Schema({
   categoria: {
     type: Schema.Types.ObjectId,
     ref: "categoria",
-    require: false,
+    require: true,
   },
 
   stock: {
-    type: Number,
-    require: true,
-    talla:{
-      type: String,
-      require: true,
-      ref : "talla"
-    }
-  },
+    type: {
+      tallas: {
+        type: Map,
+        of: Number
+      },total: {
+        type: Number,
+        required: true
+      }
+    }},
 
   comentario: {
     type: String,

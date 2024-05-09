@@ -1,11 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const categoriaSchema = Schema({
-  serial_1: {
-    type: String,
-    require: true,
-    unique: true,
-  },
+  
 
   nombre: {
     type: String,

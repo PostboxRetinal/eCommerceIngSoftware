@@ -85,6 +85,7 @@
     grid-column-gap: 75px;
     justify-items: center;
     justify-content: center;
+   
 
     .productosss{
         width: 100%;
@@ -96,6 +97,7 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
+        text-decoration: none;
    
 
     img {
@@ -105,6 +107,7 @@
       p {
         text-align: center;
         font-size: 10pt;
+        color: black;
       }
     }    
 }
@@ -117,6 +120,7 @@
     grid-column-gap: 75px;
     justify-items: center;
     justify-content: center;
+    
 
     .productosinte{
         width: 150px;
@@ -128,6 +132,7 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
+        text-decoration: none;
     
 
     img {
@@ -137,6 +142,7 @@
       p {
         text-align: center;
         font-size: 10pt;
+        color: black;
       }
     }
 }

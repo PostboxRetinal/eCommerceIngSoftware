@@ -5,10 +5,11 @@ const añadirArticulo = async (req, res) => {
     const {
       nombre,
       precioUnitario,
-      serial,
+      categoria,
       stock,
       comentario,
       isPersonalizable,
+      xl, l, m, s
     } = req.body;
 
     // Validación
@@ -21,11 +22,11 @@ const añadirArticulo = async (req, res) => {
     if (precioUnitario < 0) {
       return res.json({ error: "El precio unitario no puede ser negativo" });
     }
+    if (!categoria){
+      return res.json({error:"La categoria es obligatoria"});
+    }
     if (precioUnitario === 0) {
       return res.json({ error: "El precio unitario no puede ser 0" });
-    }
-    if (!serial) {
-      return res.json({ error: "El serial es obligatorio" });
     }
     if (!stock) {
       return res.json({ error: "El stock es obligatorio" });
@@ -72,6 +73,15 @@ const actualizarArticulo = async (req, res) => {
     if (!serial) {
       return res.json({ error: "El serial es obligatorio" });
     }
+    if (!precioUnitario) {
+      return res.json({ error: "El precio unitario es obligatorio" });
+    }
+    if (precioUnitario < 0) {
+      return res.json({ error: "El precio unitario no puede ser negativo" });
+    }
+    if (precioUnitario === 0) {
+      return res.json({ error: "El precio unitario no puede ser 0" });
+    } 
     if (!stock) {
       return res.json({ error: "El stock es obligatorio" });
     }
@@ -166,12 +176,11 @@ const buscarTodosLosArticulos = async (req, res) => {
 };
 
 
-
 module.exports = {
   añadirArticulo,
   actualizarArticulo,
   eliminarArticulo,
   buscarArticulos,
   buscarArticuloPorId,
-  buscarTodosLosArticulos
+  buscarTodosLosArticulos,
 };

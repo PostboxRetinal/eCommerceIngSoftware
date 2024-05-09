@@ -33,7 +33,8 @@ const crearUsuario = asyncHandler(async (req, res = express.request) => {
   //Guardar el usuario en la base de datos
   try {
     await usuario.save();
-    generarToken(res, usuario._id);
+    const token = await (generarToken(res, usuario._id));
+   
 
     //Enviar respuesta al cliente
     res.status(201).json({
@@ -43,6 +44,7 @@ const crearUsuario = asyncHandler(async (req, res = express.request) => {
       correo: usuario.correo,
       isAdmin: usuario.isAdmin,
       isDisennador: usuario.isDisennador,
+      token
     });
 
     //Manejo de errores
@@ -80,8 +82,8 @@ const loginUsuario = asyncHandler(async (req, res = express.request) => {
     }
 
     //Generar token
-    generarToken(res, usuario._id);
-
+    const token = await (generarToken(res, usuario._id));
+    
     //Validar si el usuario es administrador
     let esAdministrador = await Usuario.findOne({ correo: correo, isAdmin: true });
     console.log('Objeto esAdministrador: '+esAdministrador);
@@ -89,6 +91,7 @@ const loginUsuario = asyncHandler(async (req, res = express.request) => {
       return res.status(200).json({
       msg: "Bienvenido " + usuario.username + " Login correcto",
       isAdmin: false,
+      token
       });
     } else {
       return res.status(200).json({
