@@ -9,7 +9,7 @@ const añadirArticulo = async (req, res) => {
       stock,
       comentario,
       isPersonalizable,
-      xl, l, m, s
+      tallas, total
     } = req.body;
 
     // Validación
@@ -30,6 +30,33 @@ const añadirArticulo = async (req, res) => {
     }
     if (!stock) {
       return res.json({ error: "El stock es obligatorio" });
+    }
+    //Validaciones stock
+    if(stock.tallas){
+      for(let talla in stock.tallas){
+        if(stock.tallas[talla] < 0){
+          return res.json({error: `El stock de la talla ${talla} no puede ser negativo`});
+        }
+      }
+    }
+    if (stock.total < 0) {
+      return res.json({ error: "El stock no puede ser negativo" });
+    }
+    if (stock.tallas){
+      let sumaTallas = 0;
+      for (let talla in stock.tallas){
+        sumaTallas += stock.tallas[talla];
+      }
+      if (stock.total !== sumaTallas){
+        return res.json({error: "La suma de los stock por tallas no coincide con el stock total"});
+      }
+    }
+    if (stock.tallas) {
+      for (let talla in stock.tallas) {
+        if (!['XL', 'L', 'M', 'S'].includes(talla)) {
+          return res.status(400).send(`La talla ${talla} ingresada no es válida.`);
+        }
+      }
     }
     if (!comentario) {
       return res.json({ error: "El comentario es obligatorio" });
@@ -59,7 +86,7 @@ const actualizarArticulo = async (req, res) => {
     const {
       nombre,
       precioUnitario,
-      serial,
+      
       stock,
       comentario,
       isPersonalizable,
@@ -70,9 +97,7 @@ const actualizarArticulo = async (req, res) => {
     if (!nombre) {
       return res.json({ error: "El nombre es obligatorio" });
     }
-    if (!serial) {
-      return res.json({ error: "El serial es obligatorio" });
-    }
+    
     if (!precioUnitario) {
       return res.json({ error: "El precio unitario es obligatorio" });
     }
@@ -84,6 +109,33 @@ const actualizarArticulo = async (req, res) => {
     } 
     if (!stock) {
       return res.json({ error: "El stock es obligatorio" });
+    }
+    //Validaciones stock
+    if(stock.tallas){
+      for(let talla in stock.tallas){
+        if(stock.tallas[talla] < 0){
+          return res.json({error: `El stock de la talla ${talla} no puede ser negativo`});
+        }
+      }
+    }
+    if (stock.total < 0) {
+      return res.json({ error: "El stock no puede ser negativo" });
+    }
+    if (stock.tallas){
+      let sumaTallas = 0;
+      for (let talla in stock.tallas){
+        sumaTallas += stock.tallas[talla];
+      }
+      if (stock.total !== sumaTallas){
+        return res.json({error: "La suma de los stock por tallas no coincide con el stock total"});
+      }
+    }
+    if (stock.tallas) {
+      for (let talla in stock.tallas) {
+        if (!['XL', 'L', 'M', 'S'].includes(talla)) {
+          return res.status(400).send(`La talla ${talla} ingresada no es válida.`);
+        }
+      }
     }
     if (!comentario) {
       return res.json({ error: "El comentario es obligatorio" });
