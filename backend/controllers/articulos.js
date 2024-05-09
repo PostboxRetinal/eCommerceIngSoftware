@@ -92,6 +92,9 @@ const actualizarArticulo = async (req, res) => {
     if (!comentario) {
       return res.json({ error: "El comentario es obligatorio" });
     }
+    if (!precioUnitario) {
+      return res.json({ error: "El precio es obligatorio" });
+    }
     if (isPersonalizable === undefined) {
       return res.json({ error: "El campo personalizable es obligatorio" });
     }
@@ -175,6 +178,7 @@ const buscarTodosLosArticulos = async (req, res) => {
     res.status(500).json({ error: "Error interno" });
   }
 };
+
 
 module.exports = {
   añadirArticulo,

@@ -39,7 +39,7 @@ const compraSchema = Schema({
       },
 }],
 
-      cantidad: { 
+      cantidadProductos: { 
         type: Number,
          required: true 
         },

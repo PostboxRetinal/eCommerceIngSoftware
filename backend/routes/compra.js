@@ -1,14 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const { obtenerCompras, agregarCompra, eliminarCompra, actualizarCompra} = require("../controllers/compra.js");
+const { obtenerCompras, agregarCompra, eliminarCompra, actualizarCompra, buscarCompraPorConsecutivo} = require("../controllers/compra.js");
 
 router
   .route("/")
   .get(obtenerCompras)
   .post(agregarCompra)
+
+  router.route("/search").get(buscarCompraPorConsecutivo)
   
-  router.route("/:id").delete(eliminarCompra)
-  router.route("/:id").put(actualizarCompra)
+  router.route("/del").delete(eliminarCompra)
+  router.route("/upd").put(actualizarCompra)
+  
 
 module.exports = router;

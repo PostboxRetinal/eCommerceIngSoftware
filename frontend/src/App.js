@@ -11,6 +11,7 @@ import Footer from './Components/Footer/Footer';
 import Registrar from './Pages/Registrarse/Registrer';
 
 
+
 function App() {
   return (
     <div >
