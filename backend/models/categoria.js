@@ -1,11 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const categoriaSchema = Schema({
-  identificador: {
-    type: String,
-    require: true,
-    unique: true,
-  },
+  
 
   nombre: {
     type: String,

@@ -19,30 +19,16 @@ const articuloSchema = Schema({
     require: true,
   },
 
-  stock: [{
-    type: Number,
-    require: true,
-    xl: 
-      {
+  stock: {
+    type: {
+      tallas: {
+        type: Map,
+        of: Number
+      },total: {
         type: Number,
-        require: true,
-      },
-    l: 
-      {
-        type: Number,
-        require: true,
-      },
-    m: 
-      {
-        type: Number,
-        require: true,
-      },
-    s: 
-      {
-        type: Number,
-        require: true,
-      },
-  }],
+        required: true
+      }
+    }},
 
   comentario: {
     type: String,
