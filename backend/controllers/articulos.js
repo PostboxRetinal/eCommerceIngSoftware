@@ -28,7 +28,6 @@ const añadirArticulo = async (req, res) => {
     if (precioUnitario === 0) {
       return res.json({ error: "El precio unitario no puede ser 0" });
     }
-    
     if (!stock) {
       return res.json({ error: "El stock es obligatorio" });
     }
