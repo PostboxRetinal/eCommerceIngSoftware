@@ -1,0 +1,45 @@
+.Productos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.foton2{
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.2%;
+}
+.titulorop{
+    display: flex;
+    font-weight: 700;
+    font-size: 25pt;
+    margin-left: -70%;
+    margin-top: 13%;
+    word-wrap: break-word;
+    width: 20%;
+}
+
+.rophom{
+    display: flex;
+    margin-top: -25%;
+    flex-direction: column;
+    margin-left: -15%;
+    align-items: center;
+    font-size: 15pt;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ropmuj{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 50%;
+    margin-top: -29%;
+    margin-bottom: 3%;
+    font-size: 15pt;
+    font-weight: 700;
+    cursor: pointer;
+}

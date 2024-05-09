@@ -29,9 +29,10 @@ const Registrar = () =>{
     
             if (response.status === 201) {
                 setUser(response.data);
-                console.log("Usuario registrado con éxito");
+                console.log("Usuario registrado con éxito",formData);
                 alert("Bienvenido");
                 window.location.href = "/";
+                localStorage.setItem('auth-token',response.data.token);
             } else {
                 console.error("Error al registrar el usuario:", response.data); // Muestra el mensaje de error del servidor
                 alert("Ingreso inválido");

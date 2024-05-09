@@ -4,11 +4,13 @@ import logo from '../Assets/logo.png'
 import cart_icon from '../Assets/cart_icon.png'
 import { Link } from "react-router-dom"
 import { UserContext } from "../../Context/UserContext";
+import { itemContext } from "../../Context/itemsContext"
 
 const Navbar = () => {
 
     const [menu , setMenu] = useState('Tienda')
     const { user , logout} = useContext(UserContext);
+    const { getTotalCartItems }  = useContext (itemContext)
    
     return (
         <div className="navbar">
@@ -22,19 +24,11 @@ const Navbar = () => {
             <li onClick={() => {setMenu('Contactanos')}}><Link style={{textDecoration:'none'}} to='/Contactanos'>Contactanos</Link>{menu === "Contactanos"?<hr/>:<></>}</li>
         </ul>
         <div className="nav-login-cart">
-            {/* Mostrar el nombre del usuario si está autenticado, de lo contrario, mostrar el botón de inicio de sesión */}
-            {user ? (
-                    <div className="dropdown">
-                        <button className="dropbtn">{user.username}</button>
-                        <div className="dropdown-content">
-                            <button onClick={logout}>Logout</button>
-                        </div>
-                    </div>
-                ) : (
-                    <Link to='/Login'><button>Registrar/Inicio</button></Link>
-                )}
+            {localStorage.getItem('auth-token')
+            ? <button onClick={()=>{localStorage.removeItem('auth-token');window.location.replace("/")}}>Cerrar Sesion</button>
+            :<Link to='/Login'><button>Registrar/Inicio</button></Link>}
             <Link to='/Carrito'><img src={cart_icon} alt="" /></Link>
-            <div className="nav-cart-count">0</div>
+            <div className="nav-cart-count">{getTotalCartItems()}</div>
         </div>
         </div>
     )

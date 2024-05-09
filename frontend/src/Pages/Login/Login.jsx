@@ -26,6 +26,8 @@ const Login = () => {
           const res = await axios.post("http://localhost:4000/api/auth/login", datos);
           setUser(res.data.user); // Aquí asumimos que el backend devuelve el usuario al iniciar sesión
           alert("Bienvenido" + res.data.msg);
+          console.log("bienvenido",datos);
+          localStorage.setItem('auth-token',res.data.token);
         } catch (error) {
           console.error(error);
           alert("Ingreso inválido");

@@ -33,7 +33,12 @@ const crearUsuario = asyncHandler(async (req, res = express.request) => {
   //Guardar el usuario en la base de datos
   try {
     await usuario.save();
-    generarToken(res, usuario._id);
+    const token = await (generarToken(res, usuario._id));
+    res.status(200).json({
+      ok:true,
+      usuario,
+      token
+  })
 
     //Enviar respuesta al cliente
     res.status(201).json({
@@ -80,7 +85,12 @@ const loginUsuario = asyncHandler(async (req, res = express.request) => {
     }
 
     //Generar token
-    generarToken(res, usuario._id);
+    const token = await (generarToken(res, usuario._id));
+    res.status(200).json({
+      ok:true,
+      usuario,
+      token
+  })
 
     //Validar si el usuario es administrador
     let esAdministrador = await Usuario.findOne({ correo: correo, isAdmin: true });

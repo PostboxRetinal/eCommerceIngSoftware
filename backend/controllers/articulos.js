@@ -6,7 +6,6 @@ const añadirArticulo = async (req, res) => {
       nombre,
       precioUnitario,
       categoria,
-      
       stock,
       comentario,
       isPersonalizable,
@@ -28,9 +27,6 @@ const añadirArticulo = async (req, res) => {
     }
     if (precioUnitario === 0) {
       return res.json({ error: "El precio unitario no puede ser 0" });
-    }
-    if (!serial) {
-      return res.json({ error: "El serial es obligatorio" });
     }
     if (!stock) {
       return res.json({ error: "El stock es obligatorio" });

@@ -1,0 +1,24 @@
+.Phombre{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+.tituloh{
+    font-size: 19pt;
+    font-weight: 700;
+    margin-left: -62%;
+    margin-bottom: -0.7%
+}
+
+.containerH{
+    width: 90%; /* Ancho del contenedor */
+    margin: 0 auto; /* Centrar el contenedor */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 1px; /* Bordes redondeados */
+    border: 1px solid black;
+    margin-bottom: 3%;
+}
+
+
