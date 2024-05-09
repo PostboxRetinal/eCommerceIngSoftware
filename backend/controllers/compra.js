@@ -41,28 +41,49 @@ const agregarCompra = asyncHandler(async (req, res) => {
     for (const item of req.body.compraItems) {
       const articulo = await Articulo.findById(item.articulo);
       if (!articulo) {
-        await session.abortTransaction(); // Abortar la transacción si el usuario no existe
+        await session.abortTransaction(); // Abortar la transacción si el artículo no existe
         session.endSession();
         return res.status(404).json({ mensaje: `Artículo con ID ${item.articulo} no encontrado.` });
       }
-      if (articulo.stock < item.cantidad) {
-        await session.abortTransaction(); // Abortar la transacción si el usuario no existe
+      
+      // Asegurarse de que tallasRequeridas es un objeto Map
+      const tallasRequeridas = new Map(Object.entries(item.stock.tallas));
+      let stockSuficiente = true;
+      let cantidadTotalRestar = 0; // Esta variable llevará la cuenta del total a restar
+
+      // Usar for...of para iterar sobre las entradas del objeto Map
+      for (const [talla, cantidad] of tallasRequeridas) {
+        if (!articulo.stock.tallas.get(talla) || articulo.stock.tallas.get(talla) < cantidad) {
+          stockSuficiente = false;
+          break; // Salir del bucle si alguna talla no tiene suficiente stock
+        }
+        cantidadTotalRestar += cantidad; // Sumar la cantidad de cada talla al total
+      }
+
+      if (!stockSuficiente) {
+        await session.abortTransaction(); // Abortar la transacción si no hay stock suficiente
         session.endSession();
         return res.status(400).json({ mensaje: `No hay suficiente stock para el artículo: ${articulo.nombre}.` });
       }
+
+      // Restar el stock de los artículos comprados
+      const updateStock = { 'stock.total': -cantidadTotalRestar }; // Inicializar el objeto para actualizar el stock total
+
+      // Preparar la actualización para cada talla y restar del stock total
+      for (const [talla, cantidad] of tallasRequeridas) {
+        updateStock[`stock.tallas.${talla}`] = -cantidad;
+      }
+
+      // Actualizar el documento del artículo con las nuevas cantidades de stock
+      await Articulo.updateOne(
+        { _id: item.articulo },
+        { $inc: updateStock },
+        { session }
+      );
     }
 
     // Si el stock es suficiente, crear una nueva compra
     const nuevaCompra = new compra(req.body);
-
-    // Restar el stock de los artículos comprados
-    for (const item of req.body.compraItems) {
-      await Articulo.updateOne(
-        { _id: item.articulo },
-        { $inc: { stock: -item.cantidad } },
-        { session }
-      );
-    }
 
     // Validar y guardar la nueva compra en la base de datos
     await nuevaCompra.validate();
@@ -83,7 +104,6 @@ const agregarCompra = asyncHandler(async (req, res) => {
     res.status(400).json({ mensaje: 'Error al agregar la compra', detalles: error.message });
   }
 });
-
 
 const eliminarCompra = asyncHandler(async (req, res) => {
   try {

@@ -22,10 +22,16 @@ const compraSchema = Schema({
         require: true,
       },
 
-      cantidad: { 
-        type: Number,
-         required: true 
-        },
+      stock: {
+        type: {
+          tallas: {
+            type: Map,
+            of: Number
+          },total: {
+            type: Number,
+            required: true
+          }
+        }},
 
       precio: { 
         type: Number,

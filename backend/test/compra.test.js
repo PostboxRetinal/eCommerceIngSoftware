@@ -18,7 +18,12 @@ describe('Simulación de inserción de orden en MongoDB', () => {
       compraItems: [{
         consecutivo: 7,
         fecha: "2024-04-15T19:22:34.281422",
-        cantidad: 1,
+        stock:{
+          tallas: {
+            S: 1
+          },
+          total:1
+        },
         precio: 100,
         articulo: "5fb8b89e2958b913f6e324a7",
       }],
