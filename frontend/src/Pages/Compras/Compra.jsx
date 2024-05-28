@@ -88,7 +88,7 @@ const compraItems = productosEnCarrito.map(producto => ({
         };
 
         try {
-            const response = await axios.post('http://localhost:4000/api/compra/', compra);
+            const response = await axios.post('http://104.154.254.77:4000/api/compra/', compra);
             console.log('Compra procesada:', response.data);
             alert("Su Compra a sido Realizada");
             window.location.href = '/';

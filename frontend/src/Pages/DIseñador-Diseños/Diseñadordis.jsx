@@ -31,7 +31,7 @@ const Diseñadordis = () => {
           throw new Error('No se pudo obtener el UID del token');
         }
 
-        const res = await axios.get(`http://localhost:4000/api/disennos/disennador/${uid}`);
+        const res = await axios.get(`http://104.154.254.77:4000/api/disennos/disennador/${uid}`);
         setDiseños(res.data);
       } catch (error) {
         console.error('Error fetching diseños', error);
@@ -43,7 +43,7 @@ const Diseñadordis = () => {
 
   const handleUpdate = async (diseño) => {
     try {
-      await axios.put(`http://localhost:4000/api/disennos/${diseño._id}`, diseño);
+      await axios.put(`http://104.154.254.77:4000/api/disennos/${diseño._id}`, diseño);
       setDiseños(diseños.map(d => d._id === diseño._id ? diseño : d));
     } catch (error) {
       console.error('Error updating diseño', error);
@@ -52,7 +52,7 @@ const Diseñadordis = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/disennos/${id}`);
+      await axios.delete(`http://104.154.254.77:4000/api/disennos/${id}`);
       setDiseños(diseños.filter(d => d._id !== id));
     } catch (error) {
       console.error('Error deleting diseño', error);

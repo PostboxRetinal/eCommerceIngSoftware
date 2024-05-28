@@ -12,7 +12,7 @@ const Categorias = () => {
 
     const obtenerCategorias = async () => {
         try {
-            const respuesta = await axios.get('http://localhost:4000/api/categoria/categoriasr');
+            const respuesta = await axios.get('http://104.154.254.77:4000/api/categoria/categoriasr');
             setCategorias(respuesta.data);
         } catch (error) {
             console.error(error);
@@ -21,7 +21,7 @@ const Categorias = () => {
 
     const agregarCategoria = async () => {
         try {
-            const respuesta = await axios.post('http://localhost:4000/api/categoria/categoriasr', { nombre: nuevaCategoria });
+            const respuesta = await axios.post('http://104.154.254.77:4000/api/categoria/categoriasr', { nombre: nuevaCategoria });
             setCategorias([...categorias, respuesta.data]);
             setNuevaCategoria('');
         } catch (error) {
@@ -31,7 +31,7 @@ const Categorias = () => {
 
     const eliminarCategoria = async (id) => {
         try {
-            await axios.delete(`http://localhost:4000/api/categoria/categoriasr/${id}`);
+            await axios.delete(`http://104.154.254.77:4000/api/categoria/categoriasr/${id}`);
             const nuevasCategorias = categorias.filter(categoria => categoria._id !== id);
             setCategorias(nuevasCategorias);
         } catch (error) {

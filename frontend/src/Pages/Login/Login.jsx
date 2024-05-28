@@ -23,7 +23,7 @@ const Login = () => {
 
     const handleSubmit = async () => {
         try {
-            const res = await axios.post("http://localhost:4000/api/auth/login", datos);
+            const res = await axios.post("http://104.154.254.77:4000/api/auth/login", datos);
             setUser(res.data.user); // Establece el usuario en el contexto de usuario
             alert(res.data.msg); // Mostrar mensaje de bienvenida
             localStorage.setItem('auth-token', res.data.token); // Almacena el token en localStorage

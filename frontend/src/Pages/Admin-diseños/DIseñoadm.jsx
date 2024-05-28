@@ -10,8 +10,8 @@ const Diseñoadm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const diseñosRes = await axios.get('http://localhost:4000/api/disennos/');
-        const diseñadoresRes = await axios.get('http://localhost:4000/api/auth/disennadores');
+        const diseñosRes = await axios.get('http://104.154.254.77:4000/api/disennos/');
+        const diseñadoresRes = await axios.get('http://104.154.254.77:4000/api/auth/disennadores');
         setDiseños(diseñosRes.data);
         setDiseñadores(diseñadoresRes.data);
       } catch (error) {
@@ -24,7 +24,7 @@ const Diseñoadm = () => {
 
   const handleUpdate = async (diseño) => {
     try {
-      await axios.put(`http://localhost:4000/api/disennos/${diseño._id}`, diseño);
+      await axios.put(`http://104.154.254.77:4000/api/disennos/${diseño._id}`, diseño);
       setDiseños(diseños.map(d => d._id === diseño._id ? diseño : d));
     } catch (error) {
       console.error('Error updating diseño', error);
@@ -33,7 +33,7 @@ const Diseñoadm = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/disennos/${id}`);
+      await axios.delete(`http://104.154.254.77:4000/api/disennos/${id}`);
       setDiseños(diseños.filter(d => d._id !== id));
     } catch (error) {
       console.error('Error deleting diseño', error);

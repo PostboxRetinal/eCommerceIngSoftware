@@ -35,7 +35,7 @@ const ProductDisplay = ({ selectedProductId }) => {
                 return;
             }
 
-            const response = await axios.post('http://localhost:4000/api/disennos/', {
+            const response = await axios.post('http://104.154.254.77:4000/api/disennos/', {
                 identificador: `disenno-${Date.now()}`,
                 descripcion: customDescription,
                 urlImagen: customImageUrl,

@@ -27,7 +27,7 @@ const Pedusu = () => {
       if (decodedToken && decodedToken.uid) {
         setUserId(decodedToken.uid);
         setIsLoggedIn(true);
-        axios.get(`http://localhost:4000/api/compra/usuario?usuario=${decodedToken.uid}`)
+        axios.get(`http://104.154.254.77:4000/api/compra/usuario?usuario=${decodedToken.uid}`)
           .then(response => {
             setCompras(response.data);
             // Inicializar el estado de los elementos expandidos para cada compra

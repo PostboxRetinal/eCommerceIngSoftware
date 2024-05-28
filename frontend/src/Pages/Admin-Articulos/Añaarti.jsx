@@ -30,7 +30,7 @@ const Añaarti = () => {
     // Cargar categorías al montar el componente
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/categoria/categorias');
+        const response = await axios.get('http://104.154.254.77:4000/api/categoria/categorias');
         setCategorias(response.data);
       } catch (error) {
         console.error('Error al obtener las categorías:', error);
@@ -73,7 +73,7 @@ const Añaarti = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:4000/api/articulos/', newArticle);
+      await axios.post('http://104.154.254.77:4000/api/articulos/', newArticle);
       console.log('Artículo añadido correctamente');
       alert("Articulo Añadido")
       // Limpiar el formulario después de agregar el artículo

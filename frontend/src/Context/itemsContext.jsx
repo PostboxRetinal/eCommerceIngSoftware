@@ -8,7 +8,7 @@ export const ItemProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({}); // Cambié getDefaultCart a un objeto vacío
 
   useEffect(() => {
-    axios.get('http://localhost:4000/api/articulos/')
+    axios.get('http://104.154.254.77:4000/api/articulos/')
       .then(response => {
         setProductos(response.data.articulos);
         setCartItems(getDefaultCart(response.data.articulos)); // Llamar getDefaultCart aquí con los productos
@@ -56,7 +56,7 @@ export const ItemProvider = ({ children }) => {
   }
   const addArticleToDatabase = async (newArticle) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/articulos/', newArticle);
+      const response = await axios.post('http://104.154.254.77:4000/api/articulos/', newArticle);
       const addedArticle = response.data;
       setProductos(prev => [...prev, addedArticle]);
       setCartItems(prev => ({ ...prev, [addedArticle._id]: 0 }));
@@ -68,7 +68,7 @@ export const ItemProvider = ({ children }) => {
 
   const eliminarArticulo = async (itemId) => {
     try {
-      await axios.delete(`http://localhost:4000/api/articulos/${itemId}`);
+      await axios.delete(`http://104.154.254.77:4000/api/articulos/${itemId}`);
       setProductos(prevProducts => prevProducts.filter(product => product._id !== itemId));
       setCartItems(prevCartItems => {
         const updatedCart = { ...prevCartItems };
@@ -83,7 +83,7 @@ export const ItemProvider = ({ children }) => {
 
   const actualizarArticulo = async (itemId, newData) => {
     try {
-      await axios.put(`http://localhost:4000/api/articulos/${itemId}`, newData);
+      await axios.put(`http://104.154.254.77:4000/api/articulos/${itemId}`, newData);
       setProductos(prevProducts =>
         prevProducts.map(product =>
           product._id === itemId ? { ...product, ...newData } : product

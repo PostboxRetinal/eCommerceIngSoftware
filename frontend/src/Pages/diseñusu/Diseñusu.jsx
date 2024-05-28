@@ -24,7 +24,7 @@ const Diseñusu = () => {
       if (decodedToken && decodedToken.uid) {
         setUserId(decodedToken.uid);
         setIsLoggedIn(true);
-        axios.get(`http://localhost:4000/api/disennos/usu?usuario=${decodedToken.uid}`)
+        axios.get(`http://104.154.254.77:4000/api/disennos/usu?usuario=${decodedToken.uid}`)
           .then(response => {
             setDiseños(response.data);
             // Inicializar el estado de los diseños expandidos para cada usuario

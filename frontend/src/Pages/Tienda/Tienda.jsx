@@ -34,7 +34,7 @@ const Tienda = () => {
 
     const obtenerCategorias = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/categoria/categorias');
+            const response = await axios.get('http://104.154.254.77:4000/api/categoria/categorias');
             setCategorias(response.data);
         } catch (error) {
             console.error(error);

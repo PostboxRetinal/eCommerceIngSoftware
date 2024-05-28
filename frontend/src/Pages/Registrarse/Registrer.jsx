@@ -25,7 +25,7 @@ const Registrar = () =>{
         e.preventDefault();
         try {
             // Enviar los datos al backend (ruta /api/register) mediante Axios
-            const response = await axios.post("http://localhost:4000/api/auth/new", formData);
+            const response = await axios.post("http://104.154.254.77:4000/api/auth/new", formData);
     
             if (response.status === 201) {
                 setUser(response.data);

@@ -15,7 +15,7 @@ const Vercom = () => {
 
   const obtenerCompras = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/compra/');
+      const response = await axios.get('http://104.154.254.77:4000/api/compra/');
       setCompras(response.data);
     } catch (error) {
       console.error('Error al obtener las compras:', error);
@@ -24,7 +24,7 @@ const Vercom = () => {
 
   const actualizarEstadoCompra = async (compraId) => {
     try {
-      await axios.put(`http://localhost:4000/api/compra/${compraId}`, { estado: estadoSeleccionado });
+      await axios.put(`http://104.154.254.77:4000/api/compra/${compraId}`, { estado: estadoSeleccionado });
       obtenerCompras();
     } catch (error) {
       console.error('Error al actualizar el estado de la compra:', error);
@@ -33,7 +33,7 @@ const Vercom = () => {
 
   const eliminarCompra = async (compraId) => {
     try {
-      await axios.delete(`http://localhost:4000/api/compra/${compraId}`);
+      await axios.delete(`http://104.154.254.77:4000/api/compra/${compraId}`);
       obtenerCompras();
     } catch (error) {
       console.error('Error al eliminar la compra:', error);

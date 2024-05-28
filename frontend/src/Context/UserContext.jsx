@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
           return;
         }
 
-        const res = await axios.get("http://localhost:4000/api/auth/userinfo");
+        const res = await axios.get("http://104.154.254.77:4000/api/auth/userinfo");
         setUser(res.data);
       } catch (error) {
         console.error("Error al obtener la información del usuario:", error);
@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:4000/api/auth/logout");
+      await axios.post("http://104.154.254.77:4000/api/auth/logout");
       setUser(null);
       alert("Sesión cerrada exitosamente");
     } catch (error) {
