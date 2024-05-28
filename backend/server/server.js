@@ -1,7 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const { dbConnection } = require("../database/config.js");
-const cors = require("cors");
+//const cors = require("cors");
 
 class Server {
   constructor() {
@@ -30,7 +30,7 @@ class Server {
   }
 
   addMiddlewares() {
-    this.app.use(cors());
+    //this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }
